@@ -1,15 +1,17 @@
-let battleShips = new battleShips (ships);
+let ship1 = ["A4", "A1", "A3"];
 
-let ship1 = []
+function testshoot(){
+    console.log("Hello");
+}
 
-class battleShip {
-    constructor (ships){
+class BattleShip {
+    constructor (){
         this.hits = 0,
         this.guesses = 0,
         this.sunk = false,
         this.shipPosition = [],
         this.water = [],
-        his.round = 0
+        this.round = 0
     }
 }
 
@@ -23,19 +25,26 @@ class Game {
 
     }
 
-    shoot() {
-
+    shoot(event) {
+        const square = event.target.id;
+        console.log(event.target, event.target.id);
+        if (ship1.includes(square)){
+            event.target.innerText = "Hit!";
+        } else {
+            event.target.innerText =  "Water!"
+        }
     }
 }
 
 
+let battleShip = new BattleShip ();
+let game = new Game ();
+Array.from(document.getElementsByClassName("cell")).forEach( cell => cell.onclick = game.shoot);
 
 
-
-//definition of matchfield - coveredFields - choosed in function of ship
 
 // Positions of ships
-
 // Shuffle function for new positions of ships
-// class defintion battleships
+
+
 
