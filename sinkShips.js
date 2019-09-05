@@ -1,50 +1,66 @@
-let ship1 = ["A4", "A1", "A3"];
-
-function testshoot(){
-    console.log("Hello");
-}
-
 class BattleShip {
-    constructor (){
-        this.hits = 0,
-        this.guesses = 0,
-        this.sunk = false,
-        this.shipPosition = [],
-        this.water = [],
-        this.round = 0
+    constructor() {
+        this.hits =[];
+        this.sunk = false;
+        this.direction = true; // true = horizontal, false = vertical
+        this.shipHeight = 3;
+        this.shipPosition = [];
+
+
     }
+
+    setShipLocation() {
+        const columnLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
+        if (this.direction) { // horizontal
+            const startHorizontal = Math.floor(Math.random() * (10 - this.shipHeight + 1));
+            const startVertical = Math.floor(Math.random() * (10 + 1));
+            for (let i = startHorizontal; i < this.shipHeight; i++) {
+                let horizontalId = columnLetters[startHorizontal + i]
+                this.shipPosition.push(`${horizontalId}${startVertical}`);
+            }
+        } else { //vertical
+            const startHorizontal = Math.floor(Math.random() * (10 + 1));
+            const startVertical = Math.floor(Math.random() * (10 - this.shipHeight + 1));
+            for (let i = startVertical; i < this.shipHeight; i++) {
+                let verticalId = columnLetters[startVertical + i]
+                this.shipPosition.push(`${startHorizontal}${verticalId}`);
+            }
+
+        }
+    }
+
 }
 
 class Game {
     constructor() {
-    this.player = [];
-    this.coordinatemap = [[],[]];
+        this.player = [];
+        this.coordinatemap = [];
+        this.guesses = 0;
+        this.round = 0;
+        this.battleShip = new BattleShip();
+
     }
 
     start() {
-
+        this.battleShip.setShipLocation();
     }
 
     shoot(event) {
-        const square = event.target.id;
-        console.log(event.target, event.target.id);
-        if (ship1.includes(square)){
+        const shotSquareId = event.target.id;
+
+        if (this.battleShip.shipPosition.includes(shotSquareId)) {
+            this.hits.push(`${shotSquareId}`);
             event.target.innerText = "Hit!";
         } else {
-            event.target.innerText =  "Water!"
+            event.target.innerText = "Water!"
         }
     }
+    
+
 }
 
+let game = new Game();
+game.start();
+//Array.from(document.getElementsByClassName("cell")).forEach(cell => cell.onclick = game.shoot);
 
-let battleShip = new BattleShip ();
-let game = new Game ();
-Array.from(document.getElementsByClassName("cell")).forEach( cell => cell.onclick = game.shoot);
-
-
-
-// Positions of ships
-// Shuffle function for new positions of ships
-
-
-
+document.getElementById("sea").onclick = game.shoot;
