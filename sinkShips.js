@@ -63,4 +63,4 @@ let game = new Game();
 game.start();
 //Array.from(document.getElementsByClassName("cell")).forEach(cell => cell.onclick = game.shoot);
 
-document.getElementById("sea").onclick = game.shoot;
+document.getElementById("sea").onclick = () => game.shoot(event);
