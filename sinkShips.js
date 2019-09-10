@@ -11,21 +11,21 @@ class BattleShip {
     setShipLocation() {
         const rowLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
         if (this.direction == "horizontal") {
-            const row = rowLetters[Math.floor(Math.random() * 10)];
-            const startColumn = Math.floor(Math.random() * (10 - this.shipHeight));
+            const row = rowLetters[Math.floor(Math.random()*(9 + 1))]; // +1 is for the zero-based index
+            const startColumn = Math.floor(Math.random() * (9 + 1 - this.shipHeight));
             for (let column = startColumn; column < startColumn + this.shipHeight; column++) {
                 this.shipPosition.push(`${row}${column}`);
             }
         } else { //vertical
-            const startRow = Math.floor(Math.random() * (10 - this.shipHeight + 1));
-            const column = Math.floor(Math.random() * (10 + 1));
+            const startRow = Math.floor(Math.random() * (9 + 1 - this.shipHeight));
+            const column = Math.floor(Math.random() * (9 + 1);
             for (let index = startRow; index < startRow + this.shipHeight; index++) {
                 let row = rowLetters[index]
                 this.shipPosition.push(`${row}${column}`);
             }
-
         }
     }
+
     checkCollision(otherShip) {
         for (let index = 0; index < this.shipPosition.length; index++) {
             if (this.shipPosition.includes(otherShip.shipPosition[index]))
