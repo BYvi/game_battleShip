@@ -18,7 +18,7 @@ class BattleShip {
             }
         } else { //vertical
             const startRow = Math.floor(Math.random() * (9 + 1 - this.shipHeight));
-            const column = Math.floor(Math.random() * (9 + 1);
+            const column = Math.floor(Math.random() * (9 + 1));
             for (let index = startRow; index < startRow + this.shipHeight; index++) {
                 let row = rowLetters[index]
                 this.shipPosition.push(`${row}${column}`);
