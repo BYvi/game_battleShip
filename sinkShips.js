@@ -1,3 +1,44 @@
+class Game {
+    constructor() {
+        this.guesses = 0;
+        this.battleShips = [];
+        this.shipsSunk = 0;
+
+    }
+
+    start(ship1, ship2) {
+        ship1.setShipLocation();
+        this.battleShips.push(ship1);
+        ship2.setShipLocation();
+        let luckyCounter = 0;
+        while (ship1.checkCollision(ship2) && luckyCounter < 100) {
+            luckyCounter++;
+            ship2.setShipLocation();
+        }
+        this.battleShips.push(ship2);
+    }
+
+
+    shoot(event) {
+        const shotSquareId = event.target.id;
+        let anyShipIsHit = false;
+
+        this.battleShips.forEach(currentShip => {
+            if (currentShip.shipPosition.includes(shotSquareId)) {
+                currentShip.hits.push(`${shotSquareId}`);
+                anyShipIsHit = true;
+                const message = document.getElementById(shotSquareId).style.backgroundColor = currentShip.color; 
+            }
+        })
+            if (anyShipIsHit) event.target.innerText = "Hit!";
+            else event.target.innerText = "Water!"
+                
+
+            this.guesses++;
+            const counting = document.getElementById("guess").innerText = (`Guesses: ${this.guesses}`);
+    }
+}
+
 class BattleShip {
     constructor(shipHeight, direction, backgroundColor) {
         this.hits = [];
@@ -29,56 +70,26 @@ class BattleShip {
             console.log("Horizontal ship: ", this.shipPosition );
         }
     }
-    checkCollision(ship2) {
-        for (let index = 0; index < this.shipPosition.length; index++) {
-            if (this.shipPosition.includes(ship2.shipPosition[index]))
+    checkCollision(array) {
+        for (let index = this.shipPosition; index < this.shipPosition.length; index++) {
+        
+            if (this.shipPosition.includes(array.shipPosition[index]))
                 return true;
             else {
                 return false;
             }
-
+            
         }
 }
-}
-
-class Game {
-    constructor() {
-        this.player = [];
-        this.coordinatemap = [];
-        this.guesses = 0;
-        this.round = 0;
-        this.battleShips = [];
-        this.shipsSunk = 0;
-
-    }
-
-    start(ship1, ship2) {
-        ship1.setShipLocation();
-        this.battleShips.push(ship1);
-        ship2.setShipLocation();
-        let luckyCounter = 0;
-        while (ship1.checkCollision(ship2) && luckyCounter < 100) {
-            luckyCounter++;
-        }
-        this.battleShips.push(ship2);
-    }
-
-
-    shoot(event) {
-        const shotSquareId = event.target.id;
-
-        this.battleShips.forEach(currentShip => {
-
-            if (currentShip.shipPosition.includes(shotSquareId)) {
-                currentShip.hits.push(`${shotSquareId}`);
-                event.target.innerText = "Hit!";
-                const message = document.getElementById(shotSquareId).style.backgroundColor = currentShip.color;
-            } else {
-                event.target.innerText = "Water!"
+        
+     isSunk(){
+        for (let i = 0; i < this.shipPosition.length; i++){
+            if (this.shipPosition[i] == this.hits){
+                this.sunk.push('true');
+                console.log(this.sunk.push);
             }
-        })
-                this.guesses++;
-                const counting = document.getElementById("guess").innerText = (`Guesses: ${this.guesses}`);
+        }
+                return false;
     }
 }
 
