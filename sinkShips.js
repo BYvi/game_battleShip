@@ -22,23 +22,23 @@ class BattleShip {
         } else { //horizontal
             const row = rowLetters[Math.floor(Math.random() * (rowLetters.length))];
             const startColumn = Math.floor(Math.random() * (rowLetters.length - this.shipHeight - 1)) + 1;
+
             for (let column = startColumn; column < startColumn + this.shipHeight; column++) {
                 this.shipPosition.push(`${row}${column}`);
             }
             console.log("Horizontal ship: ", this.shipPosition );
         }
     }
-
-    checkCollision(otherShip) {
+    checkCollision(ship2) {
         for (let index = 0; index < this.shipPosition.length; index++) {
-            if (this.shipPosition.includes(otherShip.shipPosition[index]))
+            if (this.shipPosition.includes(ship2.shipPosition[index]))
                 return true;
             else {
                 return false;
             }
 
         }
-    }
+}
 }
 
 class Game {
@@ -64,8 +64,6 @@ class Game {
     }
 
 
-
-
     shoot(event) {
         const shotSquareId = event.target.id;
 
@@ -74,6 +72,7 @@ class Game {
             if (currentShip.shipPosition.includes(shotSquareId)) {
                 currentShip.hits.push(`${shotSquareId}`);
                 event.target.innerText = "Hit!";
+                const message = document.getElementById(shotSquareId).style.backgroundColor = currentShip.color;
             } else {
                 event.target.innerText = "Water!"
             }
