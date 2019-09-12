@@ -4,6 +4,7 @@ class Game {
         this.battleShips = [];
         this.shipsSunk = 0;
 
+
     }
 
     start(ship1, ship2) {
@@ -13,7 +14,9 @@ class Game {
         let luckyCounter = 0;
         while (ship1.checkCollision(ship2) && luckyCounter < 100) {
             luckyCounter++;
+            ship2.shipPosition = [];
             ship2.setShipLocation();
+
         }
         this.battleShips.push(ship2);
     }
@@ -27,15 +30,23 @@ class Game {
             if (currentShip.shipPosition.includes(shotSquareId)) {
                 currentShip.hits.push(`${shotSquareId}`);
                 anyShipIsHit = true;
-                const message = document.getElementById(shotSquareId).style.backgroundColor = currentShip.color; 
+                document.getElementById(shotSquareId).style.backgroundColor = currentShip.color;
+                if (currentShip.isSunk()) {
+                    this.shipsSunk++;
+                }
             }
         })
-            if (anyShipIsHit) event.target.innerText = "Hit!";
-            else event.target.innerText = "Water!"
-                
+        if (anyShipIsHit) event.target.innerText = "Hit!";
+        else event.target.innerText = "Water!";
 
-            this.guesses++;
-            const counting = document.getElementById("guess").innerText = (`Guesses: ${this.guesses}`);
+        this.guesses++;
+        document.getElementById("guess").innerText = (`Guesses: ${this.guesses}`);
+
+        if (this.shipsSunk === this.battleShips.length) {
+            const endGameNote = document.getElementById("endGame")
+            endGameNote.innerText = `Sie haben mit ${this.guesses} Versuchen alle Schiffe versenkt.`;
+            endGameNote.classList.toggle("hidden");
+        }
     }
 }
 
@@ -52,13 +63,13 @@ class BattleShip {
     setShipLocation() {
         const rowLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
         if (this.direction == "vertical") {
-            const startRow = Math.floor(Math.random()* (rowLetters.length - this.shipHeight - 1));
+            const startRow = Math.floor(Math.random() * (rowLetters.length - this.shipHeight - 1));
             const column = Math.floor(Math.random() * (rowLetters.length)) + 1;
             for (let index = startRow; index < startRow + this.shipHeight; index++) {
                 let row = rowLetters[index];
                 this.shipPosition.push(`${row}${column}`);
             }
-            console.log("Vertical ship: ", this.shipPosition );
+            console.log("Vertical ship: ", this.shipPosition);
 
         } else { //horizontal
             const row = rowLetters[Math.floor(Math.random() * (rowLetters.length))];
@@ -67,32 +78,26 @@ class BattleShip {
             for (let column = startColumn; column < startColumn + this.shipHeight; column++) {
                 this.shipPosition.push(`${row}${column}`);
             }
-            console.log("Horizontal ship: ", this.shipPosition );
+            console.log("Horizontal ship: ", this.shipPosition);
         }
     }
-    checkCollision(array) {
-        for (let index = this.shipPosition; index < this.shipPosition.length; index++) {
-        
-            if (this.shipPosition.includes(array.shipPosition[index]))
+
+    checkCollision(otherShip) {
+        for (let i = 0; i < otherShip.shipPosition.length; i++) {
+
+            if (this.shipPosition.includes(otherShip.shipPosition[i]))
                 return true;
             else {
                 return false;
             }
-            
+
         }
-}
-        
-     isSunk(){
-        for (let i = 0; i < this.shipPosition.length; i++){
-            if (this.shipPosition[i] == this.hits){
-                this.sunk.push('true');
-                console.log(this.sunk.push);
-            }
-        }
-                return false;
+    }
+
+    isSunk() {
+        return this.hits.length == this.shipPosition.length;
     }
 }
-
 
 let ship1 = new BattleShip(4, "horizontal", "red");
 let ship2 = new BattleShip(5, "vertical", "blue");
