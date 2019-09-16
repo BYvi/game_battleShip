@@ -3,8 +3,15 @@ class Game {
         this.guesses = 0;
         this.battleShips = [];
         this.shipsSunk = 0;
+    }
+    
+    displaySquareId(){
+    const displaySquareId = document.getElementsByClassName("cell");
 
-
+        Array.from(displaySquareId).forEach(element => {
+           const squareId = element.getAttribute('id');
+           element.innerText = squareId;     
+     })   
     }
 
     start(ship1, ship2) {
@@ -16,11 +23,9 @@ class Game {
             luckyCounter++;
             ship2.shipPosition = [];
             ship2.setShipLocation();
-
         }
         this.battleShips.push(ship2);
     }
-
 
     shoot(event) {
         const shotSquareId = event.target.id;
@@ -38,6 +43,7 @@ class Game {
         })
         if (anyShipIsHit) event.target.innerText = "Hit!";
         else event.target.innerText = "Water!";
+        event.target.style.textAlign = "center";
 
         this.guesses++;
         document.getElementById("guess").innerText = (`Guesses: ${this.guesses}`);
@@ -46,6 +52,7 @@ class Game {
             const endGameNote = document.getElementById("endGame")
             endGameNote.innerText = `Sie haben mit ${this.guesses} Versuchen alle Schiffe versenkt.`;
             endGameNote.classList.toggle("hidden");
+            endGameNote.style.color = "red";
         }
     }
 }
@@ -90,7 +97,6 @@ class BattleShip {
             else {
                 return false;
             }
-
         }
     }
 
@@ -100,9 +106,10 @@ class BattleShip {
 }
 
 let ship1 = new BattleShip(4, "horizontal", "red");
-let ship2 = new BattleShip(5, "vertical", "blue");
+let ship2 = new BattleShip(5, "vertical", "green");
 
 let game = new Game();
 game.start(ship1, ship2);
+game.displaySquareId();
 
 document.getElementById("sea").onclick = () => game.shoot(event);
