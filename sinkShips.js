@@ -8,9 +8,9 @@ class Game {
     displaySquareId(){
     const displaySquareId = document.getElementsByClassName("cell");
 
-        Array.from(displaySquareId).forEach(element => {
-           const squareId = element.getAttribute('id');
-           element.innerText = squareId;     
+        Array.from(displaySquareId).forEach(node => {
+           const squareId = node.getAttribute('id');
+           node.innerText = squareId;     
      })   
     }
 
@@ -35,7 +35,7 @@ class Game {
             if (currentShip.shipPosition.includes(shotSquareId)) {
                 currentShip.hits.push(`${shotSquareId}`);
                 anyShipIsHit = true;
-                document.getElementById(shotSquareId).style.backgroundColor = currentShip.color;
+                document.getElementById(shotSquareId).style.color = currentShip.color;
                 if (currentShip.isSunk()) {
                     this.shipsSunk++;
                 }
@@ -44,6 +44,7 @@ class Game {
         if (anyShipIsHit) event.target.innerText = "Hit!";
         else event.target.innerText = "Water!";
         event.target.style.textAlign = "center";
+        event.target.style.verticalAlign = "middle";
 
         this.guesses++;
         document.getElementById("guess").innerText = (`Guesses: ${this.guesses}`);
@@ -52,7 +53,8 @@ class Game {
             const endGameNote = document.getElementById("endGame")
             endGameNote.innerText = `Sie haben mit ${this.guesses} Versuchen alle Schiffe versenkt.`;
             endGameNote.classList.toggle("hidden");
-            endGameNote.style.color = "red";
+            endGameNote.style.color = "magenta";
+            endGameNote.style.fontSize = "20px";
         }
     }
 }
@@ -65,6 +67,7 @@ class BattleShip {
         this.shipHeight = shipHeight;
         this.shipPosition = [];
         this.color = backgroundColor;
+
     }
 
     setShipLocation() {
@@ -105,8 +108,8 @@ class BattleShip {
     }
 }
 
-let ship1 = new BattleShip(4, "horizontal", "red");
-let ship2 = new BattleShip(5, "vertical", "green");
+let ship1 = new BattleShip(4, "horizontal", "rosybrown");
+let ship2 = new BattleShip(5, "vertical", "lime");
 
 let game = new Game();
 game.start(ship1, ship2);
